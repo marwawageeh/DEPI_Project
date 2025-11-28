@@ -52,7 +52,19 @@ namespace Depi_Project.Controllers
             return View(model);
         }
 
-        public IActionResult Bookings() => View();
+        
+
+
+
+
+
+
+
+
+
+
+
+        
         public IActionResult Media() => View();
 
         public async Task<IActionResult> ApproveBooking(int id)

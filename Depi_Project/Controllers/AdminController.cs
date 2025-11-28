@@ -1,8 +1,10 @@
 ﻿using Depi_Project.Data;
 using Depi_Project.Models;
+using Depi_Project.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace Depi_Project.Controllers
@@ -17,9 +19,18 @@ namespace Depi_Project.Controllers
             _userManager = userManager; _db = db;
         }
 
-        public IActionResult Dashboard()
+        public async Task< IActionResult> Dashboard()
         {
-            return View();
+            var model = new AdminDashboardViewModel
+            {
+                TotalUsers = await _userManager.Users.CountAsync(),
+                TotalGyms = await _db.Gyms.CountAsync(),
+                TotalBookings = await _db.Bookings.CountAsync(),
+                TotalRevenue = await _db.Bookings.SumAsync(b => b.Amount)
+
+            };
+
+            return View(model);
         }
 
         public IActionResult Accounts()
