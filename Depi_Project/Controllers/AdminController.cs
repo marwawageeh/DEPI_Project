@@ -33,32 +33,56 @@ namespace Depi_Project.Controllers
             return View(model);
         }
 
-        public IActionResult Accounts()
+        public async Task<IActionResult> Accounts()
         {
-            return View();
+            var users = await _userManager.Users.ToListAsync();
+
+            var model = new List<AdminAccountViewModel>();
+
+
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                model.Add(new AdminAccountViewModel
+                {
+                    Id = user.Id,
+                    FullName = user.FullName,
+                    Email = user.Email,
+                    Role = roles.FirstOrDefault() ?? "User",
+                    IsActive = user.LockoutEnd == null || user.LockoutEnd < DateTime.UtcNow
+                });
+            }
+            return View(model);
         }
 
-        public async Task<IActionResult> Users()
-        {
-            var users = _userManager.Users.ToList();
-            return View(users);
-        }
-
-        public async Task<IActionResult> ToggleAccount(string id, bool enable)
+        [HttpPost]
+        public async Task<IActionResult> ToggleAccount(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
             if (user == null) return NotFound();
-            user.LockoutEnd = enable ? null : DateTimeOffset.MaxValue;
+
+            // لو Active → Suspend
+            if (user.LockoutEnd == null || user.LockoutEnd < DateTime.UtcNow)
+            {
+                user.LockoutEnd = DateTimeOffset.UtcNow.AddYears(100);//ازوده 100 سنه عشان الحساب يتقفل
+            }
+            else // لو Suspended → Activate
+            {
+                user.LockoutEnd = null;
+            }
+
             await _userManager.UpdateAsync(user);
-            return RedirectToAction("Users");
+            return RedirectToAction("Accounts");
         }
 
+        [HttpPost]
         public async Task<IActionResult> DeleteAccount(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
             if (user == null) return NotFound();
+
             await _userManager.DeleteAsync(user);
-            return RedirectToAction("Users");
+            return RedirectToAction("Accounts");
         }
     }
 }
