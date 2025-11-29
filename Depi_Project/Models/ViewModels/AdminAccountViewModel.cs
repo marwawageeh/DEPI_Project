@@ -1,4 +1,4 @@
-﻿namespace Depi_Project.Models.ViewModels
+namespace Depi_Project.Models.ViewModels
 {
 	public class AdminAccountViewModel
 	{
@@ -10,4 +10,5 @@
 		public bool IsActive { get; set; }
 		public DateTime? LastLogin { get; set; }
 	}
+
 }

@@ -33,6 +33,7 @@ namespace Depi_Project.Controllers
 
             return View(model);
         }
+
 		public async Task<IActionResult> Accounts()
 		{
 			var users = await _userManager.Users.ToListAsync();
@@ -89,4 +90,5 @@ namespace Depi_Project.Controllers
 
 
 	}
+
 }

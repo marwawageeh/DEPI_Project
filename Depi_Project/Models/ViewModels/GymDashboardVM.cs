@@ -10,4 +10,5 @@
 		public double AvgRating { get; set; }
 		public int ReviewsCount { get; set; }
 	}
+
 }

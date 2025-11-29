@@ -9,23 +9,103 @@
 	<title>Account Management • FitConnect</title>
 	<link rel="stylesheet" href="../css/style.css" />
 	<style>
-		.admin-brand .logo { background: #243242; }
-		.search-filters { display: flex; gap: 16px; margin: 20px 0; align-items: center; }
-		.filter-select { min-width: 150px; }
-		.user-table { overflow-x: auto; }
-		.user-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--primary); display: grid; place-items: center; color: white; font-weight: 600; }
-		.user-info { display: flex; align-items: center; gap: 12px; }
-		.user-details h4 { margin: 0; font-size: 14px; }
-		.user-details p { margin: 0; color: var(--muted); font-size: 12px; }
-		.status-badge { padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
-		.status-active { background: rgba(25, 193, 134, 0.1); color: var(--success); }
-		.status-pending { background: rgba(255, 151, 47, 0.1); color: var(--accent); }
-		.status-suspended { background: rgba(243, 93, 93, 0.1); color: var(--danger); }
-		.action-buttons { display: flex; gap: 8px; }
-		.action-btn { padding: 6px 12px; border-radius: 6px; border: none; cursor: pointer; font-size: 11px; font-weight: 600; }
-		.action-btn.edit { background: var(--primary); color: white; }
-		.action-btn.suspend { background: var(--accent); color: white; }
-		.action-btn.delete { background: var(--danger); color: white; }
+		.admin-brand .logo {
+			background: #243242;
+		}
+
+		.search-filters {
+			display: flex;
+			gap: 16px;
+			margin: 20px 0;
+			align-items: center;
+		}
+
+		.filter-select {
+			min-width: 150px;
+		}
+
+		.user-table {
+			overflow-x: auto;
+		}
+
+		.user-avatar {
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			background: var(--primary);
+			display: grid;
+			place-items: center;
+			color: white;
+			font-weight: 600;
+		}
+
+		.user-info {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+		}
+
+		.user-details h4 {
+			margin: 0;
+			font-size: 14px;
+		}
+
+		.user-details p {
+			margin: 0;
+			color: var(--muted);
+			font-size: 12px;
+		}
+
+		.status-badge {
+			padding: 4px 8px;
+			border-radius: 12px;
+			font-size: 11px;
+			font-weight: 600;
+		}
+
+		.status-active {
+			background: rgba(25, 193, 134, 0.1);
+			color: var(--success);
+		}
+
+		.status-pending {
+			background: rgba(255, 151, 47, 0.1);
+			color: var(--accent);
+		}
+
+		.status-suspended {
+			background: rgba(243, 93, 93, 0.1);
+			color: var(--danger);
+		}
+
+		.action-buttons {
+			display: flex;
+			gap: 8px;
+		}
+
+		.action-btn {
+			padding: 6px 12px;
+			border-radius: 6px;
+			border: none;
+			cursor: pointer;
+			font-size: 11px;
+			font-weight: 600;
+		}
+
+			.action-btn.edit {
+				background: var(--primary);
+				color: white;
+			}
+
+			.action-btn.suspend {
+				background: var(--accent);
+				color: white;
+			}
+
+			.action-btn.delete {
+				background: var(--danger);
+				color: white;
+			}
 	</style>
 </head>
 <body>
@@ -46,28 +126,27 @@
 			<p class="section-sub">Manage user accounts and gym partnerships</p>
 
 			@* <div class="search-filters">
-				@* <div style="flex: 1;">
-					<input class="input" placeholder="Search users, gyms, or emails..." style="padding-left: 40px;" />
-					<span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted);">🔍</span>
-				</div> 
-				<select class="select filter-select">
-					<option>All Users</option>
-					<option>Gym Owners</option>
-					<option>Regular Users</option>
-					<option>Admins</option>
-				</select>
-				<select class="select filter-select">
-					<option>All Status</option>
-					<option>Active</option>
-					<option>Pending</option>
-					<option>Suspended</option>
-				</select>
+			<div style="flex: 1;">
+			<input class="input" placeholder="Search users, gyms, or emails..." style="padding-left: 40px;" />
+			<span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted);">🔍</span>
+			</div>
+			<select class="select filter-select">
+			<option>All Users</option>
+			<option>Gym Owners</option>
+			<option>Regular Users</option>
+			<option>Admins</option>
+			</select>
+			<select class="select filter-select">
+			<option>All Status</option>
+			<option>Active</option>
+			<option>Pending</option>
+			<option>Suspended</option>
+			</select>
 			</div> *@
 
 			<div class="card">
 				<div class="card-header">
 					<h3>All Accounts</h3>
-					@* <div style="color: var(--muted); font-size: 14px;">1,234 total accounts</div> *@
 				</div>
 				<div class="card-body">
 					<div class="user-table">
@@ -85,7 +164,6 @@
 							<tbody>
 								@foreach (var user in Model)
 								{
-									@* var initials = string.Join("", user.FullName.Split(' ').Select(n => n[0])).ToUpper(); *@
 									var initials = string.Join("",
 									user.FullName
 									.Split(' ', StringSplitOptions.RemoveEmptyEntries)
@@ -118,7 +196,6 @@
 										<td>@(user.LastLogin?.ToString("g") ?? "—")</td>
 										<td>
 											<div class="action-buttons">
-												 @* <a asp-action="EditAccount" asp-route-id="@user.Id" class="action-btn edit">Edit</a> *@
 												<form asp-action="ToggleAccount" asp-route-id="@user.Id" method="post" style="display:inline;">
 													<button type="submit" class="action-btn suspend">
 														@(user.IsActive ? "Suspend" : "Activate")
@@ -144,17 +221,5 @@
 	</section>
 
 	<script src="../js/main.js"></script>
-	@* <script>
-		// Action buttons
-		document.querySelectorAll('.action-btn').forEach(btn => {
-			btn.addEventListener('click', (e) => {
-				e.preventDefault();
-				const action = btn.classList.contains('edit') ? 'edited' : 
-							  btn.classList.contains('suspend') ? 'suspended' : 'deleted';
-				alert(`Account ${action}!`);
-			});
-		});
-	</script> *@
 </body>
 </html>
-

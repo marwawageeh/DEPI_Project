@@ -1,5 +1,6 @@
 ﻿using Depi_Project.Data;
 using Depi_Project.Models;
+using Depi_Project.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

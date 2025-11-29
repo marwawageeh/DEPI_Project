@@ -1,9 +1,5 @@
 ﻿@model GymDashboardVM
 
-@* @{
-	Layout = "_OwnerLayout";
-} *@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -27,22 +23,6 @@
 			margin-bottom: 16px;
 		}
 
-		.facility-tags {
-			display: flex;
-			gap: 8px;
-			flex-wrap: wrap;
-			margin: 12px 0;
-		}
-
-		.facility-tag {
-			background: var(--accent);
-			color: white;
-			padding: 4px 12px;
-			border-radius: 20px;
-			font-size: 12px;
-			font-weight: 700;
-		}
-
 		.booking-item {
 			padding: 16px 0;
 			border-bottom: 1px solid #eef2f7;
@@ -51,11 +31,6 @@
 			.booking-item:last-child {
 				border-bottom: none;
 			}
-
-		.booking-name {
-			font-weight: 600;
-			margin-bottom: 4px;
-		}
 
 		.booking-time {
 			color: var(--muted);
@@ -91,10 +66,10 @@
 		<div class="container navbar">
 			<div class="brand"><div class="logo">🏋️</div> FitConnect</div>
 			<nav class="navlinks">
-				<a asp-controller="gymowner" asp-action="dashboard" style="color: var(--text);">Dashboard</a>
-				<a asp-controller="gymowner" asp-action="media">Media</a>
-				<a asp-controller="gymowner" asp-action="bookings">Bookings</a>
-				<a asp-controller="home" asp-action="index">Logout</a>
+				<a asp-controller="GymOwner" asp-action="Dashboard" style="color: var(--text);">Dashboard</a>
+				<a asp-controller="GymOwner" asp-action="Media">Media</a>
+				<a asp-controller="GymOwner" asp-action="Bookings">Bookings</a>
+				<a asp-controller="Home" asp-action="Index">Logout</a>
 			</nav>
 		</div>
 	</header>
@@ -107,29 +82,27 @@
 			<div class="kpis">
 				<div class="kpi">
 					<div>
-						<div style="color: var(--muted); font-size: 14px;margin-bottom: 4px;">Total Bookings</div>
+						<div style="color: var(--muted); font-size: 14px; margin-bottom: 4px;">Total Bookings</div>
 						<div class="value">@Model.TotalBookings</div>
-						<div style="color: var(--success); font-size: 12px;">↗ +12% this week</div>
+						<div style="color: var(--success); font-size: 12px; margin-top: 4px;">↗ +12% this week</div>
 					</div>
 					<div style="color: var(--primary); font-size: 24px;">📅</div>
 				</div>
 
 				<div class="kpi">
 					<div>
-						<div style="color: var(--muted); margin-bottom: 4px;">Total Revenue</div>
+						<div style="color: var(--muted); font-size: 14px; margin-bottom: 4px;">Total Revenue</div>
 						<div class="value">$@Model.TotalRevenue</div>
-						<div style="color: var(--success); font-size: 12px;">↗ +8% this month</div>
+						<div style="color: var(--success); font-size: 12px; margin-top: 4px;">↗ +8% this month</div>
 					</div>
 					<div style="color: var(--accent); font-size: 24px;">💰</div>
 				</div>
 
 				<div class="kpi">
 					<div>
-						<div style="color: var(--muted); margin-bottom: 4px;">Avg Rating</div>
+						<div style="color: var(--muted); font-size: 14px; margin-bottom: 4px;">Avg Rating</div>
 						<div class="value">@Model.AvgRating.ToString("0.0")</div>
-						<div style="color: var(--muted); font-size: 12px;">
-							Based on @Model.ReviewsCount reviews
-						</div>
+						<div style="color: var(--muted); font-size: 12px; margin-top: 4px;">Based on @Model.ReviewsCount reviews</div>
 					</div>
 					<div style="color: var(--accent); font-size: 24px;">⭐</div>
 				</div>
@@ -138,7 +111,6 @@
 			<div class="dashboard-layout">
 				<div class="card">
 					<img src="@Model.Gym.Media?.FirstOrDefault()?.Url" class="gym-image" />
-
 					<div class="card-body">
 						<h3>@Model.Gym.Name</h3>
 
@@ -146,7 +118,6 @@
 							<span>📍</span>
 							<span>@Model.Gym.Address</span>
 						</div>
-
 						<div class="info-row" style="margin: 8px 0;">
 							<span>📞</span>
 							<span>@Model.Gym.Phone</span>
@@ -159,19 +130,6 @@
 							<span>🕒</span>
 							<span>@Model.Gym.OpeningHours</span>
 						</div>
-						@* <div class="info-row" style="margin: 8px 0;">
-							<span>⭐</span>
-							<span>@Model.Gym.Reviews</span>
-						</div> *@
-
-						@* <div class="facility-tags">
-							@foreach (var f in Model.)
-							{
-								<span class="facility-tag">@f.Name</span>
-							}
-						</div> *@
-
-						@* <a asp-action="EditProfile" asp-controller="GymOwner" class="btn btn-ghost" style="width:100%; margin-top:16px;">Edit Profile</a> *@
 					</div>
 				</div>
 
@@ -180,17 +138,13 @@
 						<h3>Recent Bookings</h3>
 						<a asp-action="Bookings" asp-controller="GymOwner" style="color: var(--primary); font-size: 14px;">View All</a>
 					</div>
-
 					<div class="card-body">
 						@foreach (var b in Model.RecentBookings)
 						{
 							<div class="booking-item">
-								@* <div class="booking-name">@b.User.Email</div> *@
 								<div class="booking-time">📅 @b.StartDate.ToString("MMMM dd, hh:mm tt")</div>
-
 								<div class="booking-badges">
 									<span class="badge gray">@b.Type</span>
-
 									@if (b.IsConfirmedByOwner)
 									{
 										<span class="badge teal">Confirmed</span>

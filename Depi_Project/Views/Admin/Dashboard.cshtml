@@ -1,6 +1,5 @@
 ﻿@model Depi_Project.Models.ViewModels.AdminDashboardViewModel
 
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -9,20 +8,86 @@
 	<title>Admin Dashboard • FitConnect</title>
 	<link rel="stylesheet" href="../css/style.css" />
 	<style>
-		.admin-brand .logo { background: #243242; }
-		.admin-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 24px 0; }
-		.admin-stat { background: white; border-radius: 12px; padding: 20px; box-shadow: var(--shadow); text-align: center; }
-		.admin-stat .icon { font-size: 32px; margin-bottom: 12px; }
-		.admin-stat .value { font-size: 28px; font-weight: 800; margin: 8px 0; }
-		.admin-stat .label { color: var(--muted); font-size: 14px; }
-		.recent-activity { background: white; border-radius: 12px; padding: 20px; box-shadow: var(--shadow); margin: 20px 0; }
-		.activity-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #eef2f7; }
-		.activity-item:last-child { border-bottom: none; }
-		.activity-icon { width: 40px; height: 40px; border-radius: 8px; display: grid; place-items: center; color: white; font-size: 16px; }
-		.activity-icon.user { background: var(--primary); }
-		.activity-icon.gym { background: var(--accent); }
-		.activity-icon.booking { background: var(--success); }
-		.activity-icon.issue { background: var(--danger); }
+		.admin-brand .logo {
+			background: #243242;
+		}
+
+		.admin-stats {
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
+			gap: 20px;
+			margin: 24px 0;
+		}
+
+		.admin-stat {
+			background: white;
+			border-radius: 12px;
+			padding: 20px;
+			box-shadow: var(--shadow);
+			text-align: center;
+		}
+
+			.admin-stat .icon {
+				font-size: 32px;
+				margin-bottom: 12px;
+			}
+
+			.admin-stat .value {
+				font-size: 28px;
+				font-weight: 800;
+				margin: 8px 0;
+			}
+
+			.admin-stat .label {
+				color: var(--muted);
+				font-size: 14px;
+			}
+
+		.recent-activity {
+			background: white;
+			border-radius: 12px;
+			padding: 20px;
+			box-shadow: var(--shadow);
+			margin: 20px 0;
+		}
+
+		.activity-item {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			padding: 12px 0;
+			border-bottom: 1px solid #eef2f7;
+		}
+
+			.activity-item:last-child {
+				border-bottom: none;
+			}
+
+		.activity-icon {
+			width: 40px;
+			height: 40px;
+			border-radius: 8px;
+			display: grid;
+			place-items: center;
+			color: white;
+			font-size: 16px;
+		}
+
+			.activity-icon.user {
+				background: var(--primary);
+			}
+
+			.activity-icon.gym {
+				background: var(--accent);
+			}
+
+			.activity-icon.booking {
+				background: var(--success);
+			}
+
+			.activity-icon.issue {
+				background: var(--danger);
+			}
 	</style>
 </head>
 <body>
@@ -43,80 +108,74 @@
 			<p class="section-sub">Monitor platform activity and manage all accounts</p>
 
 			<div class="admin-stats">
-			<div class="admin-stat">
-				<div class="icon">👥</div>
-				<div class="value">@Model.TotalUsers</div>
-				<div class="label">Total Users</div>
+				<div class="admin-stat">
+					<div class="icon">👥</div>
+					<div class="value">@Model.TotalUsers</div>
+					<div class="label">Total Users</div>
+				</div>
+				<div class="admin-stat">
+					<div class="icon">🏢</div>
+					<div class="value">@Model.TotalGyms</div>
+					<div class="label">Gym Partners</div>
+				</div>
+				<div class="admin-stat">
+					<div class="icon">📅</div>
+					<div class="value">@Model.TotalBookings</div>
+					<div class="label">Total Bookings</div>
+				</div>
+				<div class="admin-stat">
+					<div class="icon">💰</div>
+					<div class="value">@Model.TotalRevenue.ToString("C")</div>
+					<div class="label">Platform Revenue</div>
+				</div>
 			</div>
 
-			<div class="admin-stat">
-				<div class="icon">🏢</div>
-				<div class="value">@Model.TotalGyms</div>
-				<div class="label">Gym Partners</div>
-			</div>
+@* 			<div class="recent-activity">
+				<h3 style="margin: 0 0 16px;">Recent Activity</h3>
+				<div class="activity-item">
+					<div class="activity-icon user">👤</div>
+					<div>
+						<div style="font-weight: 600;">New user registered</div>
+						<div style="color: var(--muted); font-size: 14px;">Sarah Johnson joined 2 hours ago</div>
+					</div>
+				</div>
+				<div class="activity-item">
+					<div class="activity-icon gym">🏢</div>
+					<div>
+						<div style="font-weight: 600;">Gym profile updated</div>
+						<div style="color: var(--muted); font-size: 14px;">PowerFit Gym updated their facilities</div>
+					</div>
+				</div>
+				<div class="activity-item">
+					<div class="activity-icon booking">📅</div>
+					<div>
+						<div style="font-weight: 600;">New booking created</div>
+						<div style="color: var(--muted); font-size: 14px;">Mike Davis booked a session at Elite Fitness</div>
+					</div>
+				</div>
+				<div class="activity-item">
+					<div class="activity-icon issue">⚠️</div>
+					<div>
+						<div style="font-weight: 600;">Report submitted</div>
+						<div style="color: var(--muted); font-size: 14px;">User reported inappropriate content</div>
+					</div>
+				</div>
+			</div> *@
 
-			<div class="admin-stat">
-				<div class="icon">📅</div>
-				<div class="value">@Model.TotalBookings</div>
-				<div class="label">Total Bookings</div>
-			</div>
-
-			<div class="admin-stat">
-				<div class="icon">💰</div>
-				<div class="value">@Model.TotalRevenue.ToString("C")</div>
-				<div class="label">Platform Revenue</div>
-			</div>
-			</div>
-
-@* 			<div class="grid grid-2">
-				<div class="recent-activity">
-					<h3 style="margin: 0 0 16px;">Recent Activity</h3>
-					<div class="activity-item">
-						<div class="activity-icon user">👤</div>
-						<div>
-							<div style="font-weight: 600;">New user registered</div>
-							<div style="color: var(--muted); font-size: 14px;">Sarah Johnson joined 2 hours ago</div>
-						</div>
-					</div>
-					<div class="activity-item">
-						<div class="activity-icon gym">🏢</div>
-						<div>
-							<div style="font-weight: 600;">Gym profile updated</div>
-							<div style="color: var(--muted); font-size: 14px;">PowerFit Gym updated their facilities</div>
-						</div>
-					</div>
-					<div class="activity-item">
-						<div class="activity-icon booking">📅</div>
-						<div>
-							<div style="font-weight: 600;">New booking created</div>
-							<div style="color: var(--muted); font-size: 14px;">Mike Davis booked a session at Elite Fitness</div>
-						</div>
-					</div>
-					<div class="activity-item">
-						<div class="activity-icon issue">⚠️</div>
-						<div>
-							<div style="font-weight: 600;">Report submitted</div>
-							<div style="color: var(--muted); font-size: 14px;">User reported inappropriate content</div>
-						</div>
-					</div>
-				</div> *@
-
-				<div class="card">
-					<div class="card-header">
-						<h3>Quick Actions</h3>
-					</div>
-					<div class="card-body">
-						<div style="display: flex; flex-direction: column; gap: 12px;">
-							<a asp-action="accounts" asp-controller="admin" class="btn btn-primary">Manage Accounts</a>
-							
-						</div>
+			<div class="card">
+				<div class="card-header">
+					<h3>Quick Actions</h3>
+				</div>
+				<div class="card-body">
+					<div style="display: flex; flex-direction: column; gap: 12px;">
+						<a asp-action="accounts" asp-controller="admin" class="btn btn-primary">Manage Accounts</a>
 					</div>
 				</div>
 			</div>
+
 		</div>
 	</section>
 
 	<script src="../js/main.js"></script>
 </body>
 </html>
-
