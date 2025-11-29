@@ -150,6 +150,30 @@
 			.trainer-btn:hover {
 				background: #1e4ecb;
 			}
+
+		/* تنسيق نجوم التقييم */
+		.star-rating {
+			direction: rtl;
+			display: inline-flex;
+			font-size: 32px;
+			gap: 4px;
+		}
+
+			.star-rating input[type="radio"] {
+				display: none;
+			}
+
+			.star-rating label {
+				color: #ddd;
+				cursor: pointer;
+				transition: color 0.2s;
+			}
+
+				.star-rating label:hover,
+				.star-rating label:hover ~ label,
+				.star-rating input[type="radio"]:checked ~ label {
+					color: #f5c518;
+				}
 	</style>
 </head>
 
@@ -175,7 +199,7 @@
 					<!-- GALLERY -->
 					<div class="gym-gallery">
 						@* <img src="@(Model.Images.FirstOrDefault() ?? "~/assets/7.jpg")"
-							 class="main-image" /> *@
+						class="main-image" /> *@
 						<img src="@Url.Content(Model.Images.FirstOrDefault() ?? "~/assets/7.jpg")" class="main-image" />
 
 
@@ -245,9 +269,113 @@
 					<div class="tab-content" data-tab-panel="reviews">
 						<div class="card">
 							<h3>Customer Reviews</h3>
-							<div class="card-body" style="text-align:center; padding:40px;">
-								<div style="font-size: 48px;">⭐</div>
-								<h4>@Model.Rating.ToString("0.0") ⭐ — (@Model.ReviewsCount reviews)</h4>
+							<div class="card-body">
+								<!-- إحصائيات التقييم -->
+								<div style="text-align:center; padding:30px; background:#f8f9fa; border-radius:12px; margin-bottom:30px;">
+									<div style="font-size: 48px;">⭐</div>
+									<h4>@Model.Rating.ToString("0.0") ⭐ — (@Model.ReviewsCount reviews)</h4>
+								</div>
+
+								<!-- نموذج إضافة مراجعة جديدة -->
+								<div style="background:#fff; border:2px solid #e0e0e0; border-radius:12px; padding:24px; margin-bottom:30px;">
+									<h4 style="margin-bottom:20px;">✍️ Write Your Review</h4>
+
+									@if (TempData["SuccessMessage"] != null)
+									{
+										<div style="padding:12px; background:#d4edda; color:#155724; border-radius:8px; margin-bottom:16px;">
+											@TempData["SuccessMessage"]
+										</div>
+									}
+
+									@if (TempData["ErrorMessage"] != null)
+									{
+										<div style="padding:12px; background:#f8d7da; color:#721c24; border-radius:8px; margin-bottom:16px;">
+											@TempData["ErrorMessage"]
+										</div>
+									}
+
+									<form method="post" asp-controller="User" asp-action="AddReview">
+										<input type="hidden" name="gymId" value="@Model.Id" />
+
+										<!-- تقييم النجوم -->
+										<div style="margin-bottom:20px;">
+											<label style="display:block; font-weight:600; margin-bottom:8px;">Your Rating:</label>
+											<div class="star-rating">
+												<input type="radio" id="star5" name="rating" value="5" required />
+												<label for="star5" title="5 stars">★</label>
+
+												<input type="radio" id="star4" name="rating" value="4" />
+												<label for="star4" title="4 stars">★</label>
+
+												<input type="radio" id="star3" name="rating" value="3" />
+												<label for="star3" title="3 stars">★</label>
+
+												<input type="radio" id="star2" name="rating" value="2" />
+												<label for="star2" title="2 stars">★</label>
+
+												<input type="radio" id="star1" name="rating" value="1" />
+												<label for="star1" title="1 star">★</label>
+											</div>
+										</div>
+
+										<!-- التعليق -->
+										<div style="margin-bottom:20px;">
+											<label style="display:block; font-weight:600; margin-bottom:8px;">Your Comment:</label>
+											<textarea name="comment"
+													  rows="4"
+													  style="width:100%; padding:12px; border:1px solid #ddd; border-radius:8px; font-size:14px; font-family:inherit;"
+													  placeholder="Share your experience with this gym..."
+													  required></textarea>
+										</div>
+
+										<!-- زر الإرسال -->
+										<button type="submit"
+												class="btn btn-primary"
+												style="width:100%; padding:12px; font-size:16px; font-weight:600;">
+											Submit Review
+										</button>
+
+										@Html.AntiForgeryToken()
+									</form>
+								</div>
+
+								<!-- عرض المراجعات الموجودة -->
+								<h4 style="margin-bottom:20px;">📝 All Reviews</h4>
+								@if (Model.Reviews != null && Model.Reviews.Any())
+								{
+									<div style="display:flex; flex-direction:column; gap:16px;">
+										@foreach (var review in Model.Reviews)
+										{
+											<div style="background:#f8f9fa; border-radius:12px; padding:20px; border-left:4px solid #2563eb;">
+												<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+													<div>
+														<strong style="font-size:16px; color:#222;">
+															@(review.User?.FullName ?? "Anonymous User")
+														</strong>
+														<div style="color:#f5c518; font-size:18px; margin-top:4px;">
+															@string.Concat(Enumerable.Repeat("★", (int)review.Rating))@string.Concat(Enumerable.Repeat("☆", 5 - (int)review.Rating))
+															<span style="color:#666; font-size:14px; margin-left:8px;">
+																(@review.Rating.ToString("0.0"))
+															</span>
+														</div>
+													</div>
+													<div style="color:#999; font-size:13px;">
+														@review.CreatedAt.ToString("dd MMM yyyy")
+													</div>
+												</div>
+												<p style="color:#555; line-height:1.6; margin:0;">
+													@review.Comment
+												</p>
+											</div>
+										}
+									</div>
+								}
+								else
+								{
+									<p style="text-align:center; color:#999; padding:30px;">
+										No reviews yet. Be the first to review this gym!
+									</p>
+								}
 							</div>
 						</div>
 					</div>
@@ -278,7 +406,7 @@
 						<form method="post" asp-controller="Favorites" asp-action="Add">
 							<input type="hidden" name="gymId" value="@Model.Id" />
 							@* <button class="btn btn-outline-primary" style="margin-top:12px; width:100%;">
-								❤️ Add to Favorites
+							❤️ Add to Favorites
 							</button> *@
 							<form method="post" action="/Gym/ToggleFavorite">
 								<input type="hidden" name="gymId" value="@Model.Id" />

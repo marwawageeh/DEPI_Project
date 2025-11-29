@@ -307,5 +307,53 @@ namespace Depi_Project.Controllers
             TempData["SuccessMessage"] = "Profile updated successfully!";
             return RedirectToAction("Profile");
         }
-    }
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> AddReview(int gymId, int rating, string comment)
+		{
+			// التأكد من تسجيل دخول المستخدم
+			var userId = _userManager.GetUserId(User);
+			if (string.IsNullOrEmpty(userId))
+			{
+				return RedirectToAction("Login", "Account");
+			}
+
+			// التحقق من صحة البيانات
+			if (rating < 1 || rating > 5)
+			{
+				TempData["ErrorMessage"] = "Rating must be between 1 and 5.";
+				return RedirectToAction("Details", new { id = gymId });
+			}
+
+			if (string.IsNullOrWhiteSpace(comment))
+			{
+				TempData["ErrorMessage"] = "Comment cannot be empty.";
+				return RedirectToAction("Details", new { id = gymId });
+			}
+
+			// التحقق من وجود الجيم
+			var gymExists = await _context.Gyms.AnyAsync(g => g.Id == gymId);
+			if (!gymExists)
+			{
+				return NotFound();
+			}
+
+			// إنشاء المراجعة الجديدة
+			var review = new Review
+			{
+				GymId = gymId,
+				UserId = userId,
+				Rating = rating,
+				Comment = comment,
+				CreatedAt = DateTime.Now
+			};
+
+			_context.Reviews.Add(review);
+			await _context.SaveChangesAsync();
+
+			TempData["SuccessMessage"] = "Your review has been added successfully!";
+			return RedirectToAction("Details", new { id = gymId });
+		}
+	}
 }

@@ -85,7 +85,14 @@
 							<tbody>
 								@foreach (var user in Model)
 								{
-									var initials = string.Join("", user.FullName.Split(' ').Select(n => n[0])).ToUpper();
+									@* var initials = string.Join("", user.FullName.Split(' ').Select(n => n[0])).ToUpper(); *@
+									var initials = string.Join("",
+									user.FullName
+									.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+									.Where(n => !string.IsNullOrWhiteSpace(n))
+									.Select(n => n[0])
+									).ToUpper();
+
 									<tr>
 										<td>
 											<div class="user-info">
