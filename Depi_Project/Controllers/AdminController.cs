@@ -49,7 +49,8 @@ namespace Depi_Project.Controllers
                     FullName = user.FullName,
                     Email = user.Email,
                     Role = roles.FirstOrDefault() ?? "User",
-                    IsActive = user.LockoutEnd == null || user.LockoutEnd < DateTime.UtcNow
+                    IsActive = user.LockoutEnd == null || user.LockoutEnd < DateTime.UtcNow,
+
                 });
             }
             return View(model);

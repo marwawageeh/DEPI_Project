@@ -1,4 +1,7 @@
-﻿<!doctype html>
+﻿@model List<Depi_Project.Models.ViewModels.AdminAccountViewModel>
+
+
+<!doctype html>
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
@@ -6,29 +9,109 @@
 	<title>Account Management • FitConnect</title>
 	<link rel="stylesheet" href="../css/style.css" />
 	<style>
-		.admin-brand .logo { background: #243242; }
-		.search-filters { display: flex; gap: 16px; margin: 20px 0; align-items: center; }
-		.filter-select { min-width: 150px; }
-		.user-table { overflow-x: auto; }
-		.user-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--primary); display: grid; place-items: center; color: white; font-weight: 600; }
-		.user-info { display: flex; align-items: center; gap: 12px; }
-		.user-details h4 { margin: 0; font-size: 14px; }
-		.user-details p { margin: 0; color: var(--muted); font-size: 12px; }
-		.status-badge { padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
-		.status-active { background: rgba(25, 193, 134, 0.1); color: var(--success); }
-		.status-pending { background: rgba(255, 151, 47, 0.1); color: var(--accent); }
-		.status-suspended { background: rgba(243, 93, 93, 0.1); color: var(--danger); }
-		.action-buttons { display: flex; gap: 8px; }
-		.action-btn { padding: 6px 12px; border-radius: 6px; border: none; cursor: pointer; font-size: 11px; font-weight: 600; }
-		.action-btn.edit { background: var(--primary); color: white; }
-		.action-btn.suspend { background: var(--accent); color: white; }
-		.action-btn.delete { background: var(--danger); color: white; }
+		.admin-brand .logo {
+			background: #243242;
+		}
+
+		.search-filters {
+			display: flex;
+			gap: 16px;
+			margin: 20px 0;
+			align-items: center;
+		}
+
+		.filter-select {
+			min-width: 150px;
+		}
+
+		.user-table {
+			overflow-x: auto;
+		}
+
+		.user-avatar {
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			background: var(--primary);
+			display: grid;
+			place-items: center;
+			color: white;
+			font-weight: 600;
+		}
+
+		.user-info {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+		}
+
+		.user-details h4 {
+			margin: 0;
+			font-size: 14px;
+		}
+
+		.user-details p {
+			margin: 0;
+			color: var(--muted);
+			font-size: 12px;
+		}
+
+		.status-badge {
+			padding: 4px 8px;
+			border-radius: 12px;
+			font-size: 11px;
+			font-weight: 600;
+		}
+
+		.status-active {
+			background: rgba(25, 193, 134, 0.1);
+			color: var(--success);
+		}
+
+		.status-pending {
+			background: rgba(255, 151, 47, 0.1);
+			color: var(--accent);
+		}
+
+		.status-suspended {
+			background: rgba(243, 93, 93, 0.1);
+			color: var(--danger);
+		}
+
+		.action-buttons {
+			display: flex;
+			gap: 8px;
+		}
+
+		.action-btn {
+			padding: 6px 12px;
+			border-radius: 6px;
+			border: none;
+			cursor: pointer;
+			font-size: 11px;
+			font-weight: 600;
+		}
+
+			.action-btn.edit {
+				background: var(--primary);
+				color: white;
+			}
+
+			.action-btn.suspend {
+				background: var(--accent);
+				color: white;
+			}
+
+			.action-btn.delete {
+				background: var(--danger);
+				color: white;
+			}
 	</style>
 </head>
 <body>
 	<header class="header">
 		<div class="container navbar">
-			<div class="brand admin-brand"><div class="logo">🛡️</div> FitConnect</div>
+			<div class="brand admin-brand"><div class="logo"><a href="/Home/Index">🛡️</a></div> FitConnect</div>
 			<nav class="navlinks">
 				<a asp-controller="admin" asp-action="dashboard">Dashboard</a>
 				<a asp-controller="admin" asp-action="accounts">Accounts</a>
@@ -42,29 +125,29 @@
 			<h1 class="section-title">Account Management</h1>
 			<p class="section-sub">Manage user accounts and gym partnerships</p>
 
-			<div class="search-filters">
-				<div style="flex: 1;">
-					<input class="input" placeholder="Search users, gyms, or emails..." style="padding-left: 40px;" />
-					<span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted);">🔍</span>
-				</div>
-				<select class="select filter-select">
-					<option>All Users</option>
-					<option>Gym Owners</option>
-					<option>Regular Users</option>
-					<option>Admins</option>
-				</select>
-				<select class="select filter-select">
-					<option>All Status</option>
-					<option>Active</option>
-					<option>Pending</option>
-					<option>Suspended</option>
-				</select>
+			@* <div class="search-filters">
+			@* <div style="flex: 1;">
+			<input class="input" placeholder="Search users, gyms, or emails..." style="padding-left: 40px;" />
+			<span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted);">🔍</span>
 			</div>
+			<select class="select filter-select">
+			<option>All Users</option>
+			<option>Gym Owners</option>
+			<option>Regular Users</option>
+			<option>Admins</option>
+			</select>
+			<select class="select filter-select">
+			<option>All Status</option>
+			<option>Active</option>
+			<option>Pending</option>
+			<option>Suspended</option>
+			</select>
+			</div> *@
 
 			<div class="card">
 				<div class="card-header">
 					<h3>All Accounts</h3>
-					<div style="color: var(--muted); font-size: 14px;">1,234 total accounts</div>
+					@* <div style="color: var(--muted); font-size: 14px;">1,234 total accounts</div> *@
 				</div>
 				<div class="card-body">
 					<div class="user-table">
@@ -80,91 +163,52 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>
-										<div class="user-info">
-											<div class="user-avatar">JS</div>
-											<div class="user-details">
-												<h4>John Smith</h4>
-												<p>john@example.com</p>
+								@foreach (var user in Model)
+								{
+									var initials = string.Join("", user.FullName.Split(' ').Select(n => n[0])).ToUpper();
+									<tr>
+										<td>
+											<div class="user-info">
+												<div class="user-avatar">@initials</div>
+												<div class="user-details">
+													<h4>@user.FullName</h4>
+													<p>@user.Email</p>
+												</div>
 											</div>
-										</div>
-									</td>
-									<td>User</td>
-									<td>Jan 15, 2024</td>
-									<td><span class="status-badge status-active">Active</span></td>
-									<td>2 hours ago</td>
-									<td>
-										<div class="action-buttons">
-											<button class="action-btn edit">Edit</button>
-											<button class="action-btn suspend">Suspend</button>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="user-info">
-											<div class="user-avatar">SJ</div>
-											<div class="user-details">
-												<h4>Sarah Johnson</h4>
-												<p>sarah@example.com</p>
+										</td>
+										<td>@user.Role</td>
+										<td>@user.CreatedAt.ToString("MMM dd, yyyy")</td>
+										<td>
+											@if (user.IsActive)
+											{
+												<span class="status-badge status-active">Active</span>
+											}
+											else
+											{
+												<span class="status-badge status-suspended">Suspended</span>
+											}
+										</td>
+										<td>@(user.LastLogin?.ToString("g") ?? "—")</td>
+										<td>
+											<div class="action-buttons">
+												@* <a asp-action="EditAccount" asp-route-id="@user.Id" class="action-btn edit">Edit</a> *@
+												<form asp-action="ToggleAccount" asp-route-id="@user.Id" method="post" style="display:inline;">
+													<button type="submit" class="action-btn suspend">
+														@(user.IsActive ? "Suspend" : "Activate")
+													</button>
+												</form>
+
+												<form asp-action="DeleteAccount" asp-route-id="@user.Id" method="post" style="display:inline;"
+													  onsubmit="return confirm('Are you sure you want to delete this account?')">
+													<button type="submit" class="action-btn delete">Delete</button>
+												</form>
+
 											</div>
-										</div>
-									</td>
-									<td>Gym Owner</td>
-									<td>Dec 8, 2023</td>
-									<td><span class="status-badge status-active">Active</span></td>
-									<td>1 day ago</td>
-									<td>
-										<div class="action-buttons">
-											<button class="action-btn edit">Edit</button>
-											<button class="action-btn suspend">Suspend</button>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="user-info">
-											<div class="user-avatar">MD</div>
-											<div class="user-details">
-												<h4>Mike Davis</h4>
-												<p>mike@example.com</p>
-											</div>
-										</div>
-									</td>
-									<td>User</td>
-									<td>Feb 3, 2024</td>
-									<td><span class="status-badge status-pending">Pending</span></td>
-									<td>3 days ago</td>
-									<td>
-										<div class="action-buttons">
-											<button class="action-btn edit">Edit</button>
-											<button class="action-btn delete">Delete</button>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="user-info">
-											<div class="user-avatar">PF</div>
-											<div class="user-details">
-												<h4>PowerFit Gym</h4>
-												<p>gym@powerfit.com</p>
-											</div>
-										</div>
-									</td>
-									<td>Gym Partner</td>
-									<td>Nov 20, 2023</td>
-									<td><span class="status-badge status-active">Active</span></td>
-									<td>5 hours ago</td>
-									<td>
-										<div class="action-buttons">
-											<button class="action-btn edit">Edit</button>
-											<button class="action-btn suspend">Suspend</button>
-										</div>
-									</td>
-								</tr>
+										</td>
+									</tr>
+								}
 							</tbody>
+
 						</table>
 					</div>
 				</div>
@@ -173,17 +217,17 @@
 	</section>
 
 	<script src="../js/main.js"></script>
-	<script>
-		// Action buttons
-		document.querySelectorAll('.action-btn').forEach(btn => {
-			btn.addEventListener('click', (e) => {
-				e.preventDefault();
-				const action = btn.classList.contains('edit') ? 'edited' : 
-							  btn.classList.contains('suspend') ? 'suspended' : 'deleted';
-				alert(`Account ${action}!`);
-			});
-		});
-	</script>
+	@* <script>
+	// Action buttons
+	document.querySelectorAll('.action-btn').forEach(btn => {
+	btn.addEventListener('click', (e) => {
+	e.preventDefault();
+	const action = btn.classList.contains('edit') ? 'edited' :
+	btn.classList.contains('suspend') ? 'suspended' : 'deleted';
+	alert(`Account ${action}!`);
+	});
+	});
+	</script> *@
 </body>
 </html>
 
