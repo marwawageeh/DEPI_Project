@@ -1,4 +1,7 @@
-﻿<!doctype html>
+﻿@model Depi_Project.Models.ViewModels.AdminDashboardViewModel
+
+
+<!doctype html>
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
@@ -25,7 +28,7 @@
 <body>
 	<header class="header">
 		<div class="container navbar">
-			<div class="brand admin-brand"><div class="logo">🛡️</div> FitConnect</div>
+			<div class="brand admin-brand"><div class="logo"><a href="/Home/Index">🛡️</a></div> FitConnect</div>
 			<nav class="navlinks">
 				<a asp-controller="admin" asp-action="dashboard">Dashboard</a>
 				<a asp-controller="admin" asp-action="accounts">Accounts</a>
@@ -40,29 +43,32 @@
 			<p class="section-sub">Monitor platform activity and manage all accounts</p>
 
 			<div class="admin-stats">
-				<div class="admin-stat">
-					<div class="icon">👥</div>
-					<div class="value">1,234</div>
-					<div class="label">Total Users</div>
-				</div>
-				<div class="admin-stat">
-					<div class="icon">🏢</div>
-					<div class="value">89</div>
-					<div class="label">Gym Partners</div>
-				</div>
-				<div class="admin-stat">
-					<div class="icon">📅</div>
-					<div class="value">2,456</div>
-					<div class="label">Total Bookings</div>
-				</div>
-				<div class="admin-stat">
-					<div class="icon">💰</div>
-					<div class="value">$45,678</div>
-					<div class="label">Platform Revenue</div>
-				</div>
+			<div class="admin-stat">
+				<div class="icon">👥</div>
+				<div class="value">@Model.TotalUsers</div>
+				<div class="label">Total Users</div>
 			</div>
 
-			<div class="grid grid-2">
+			<div class="admin-stat">
+				<div class="icon">🏢</div>
+				<div class="value">@Model.TotalGyms</div>
+				<div class="label">Gym Partners</div>
+			</div>
+
+			<div class="admin-stat">
+				<div class="icon">📅</div>
+				<div class="value">@Model.TotalBookings</div>
+				<div class="label">Total Bookings</div>
+			</div>
+
+			<div class="admin-stat">
+				<div class="icon">💰</div>
+				<div class="value">$@Model.TotalRevenue.ToString("C")</div>
+				<div class="label">Platform Revenue</div>
+			</div>
+			</div>
+
+@* 			<div class="grid grid-2">
 				<div class="recent-activity">
 					<h3 style="margin: 0 0 16px;">Recent Activity</h3>
 					<div class="activity-item">
@@ -93,7 +99,7 @@
 							<div style="color: var(--muted); font-size: 14px;">User reported inappropriate content</div>
 						</div>
 					</div>
-				</div>
+				</div> *@
 
 				<div class="card">
 					<div class="card-header">
@@ -101,9 +107,8 @@
 					</div>
 					<div class="card-body">
 						<div style="display: flex; flex-direction: column; gap: 12px;">
-							<a href="admin-accounts.html" class="btn btn-primary">Manage Accounts</a>
+							<a asp-action="accounts" asp-controller="admin" class="btn btn-primary">Manage Accounts</a>
 							
-							<a href="admin-settings.html" class="btn btn-ghost">Platform Settings</a>
 						</div>
 					</div>
 				</div>

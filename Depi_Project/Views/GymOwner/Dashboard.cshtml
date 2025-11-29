@@ -1,23 +1,89 @@
-﻿<!doctype html>
+﻿@model GymDashboardVM
+
+@* @{
+	Layout = "_OwnerLayout";
+} *@
+
+<!doctype html>
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<title>Gym Dashboard • FitConnect</title>
-	<link rel="stylesheet" href="../css/style.css" />
+	<link rel="stylesheet" href="~/css/style.css" />
 	<style>
-		.dashboard-layout { display: grid; grid-template-columns: 1fr 400px; gap: 24px; margin-top: 24px; }
-		.gym-image { width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 16px; }
-		.facility-tags { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
-		.facility-tag { background: var(--accent); color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; }
-		.booking-item { padding: 16px 0; border-bottom: 1px solid #eef2f7; }
-		.booking-item:last-child { border-bottom: none; }
-		.booking-name { font-weight: 600; margin-bottom: 4px; }
-		.booking-time { color: var(--muted); font-size: 14px; margin-bottom: 8px; }
-		.booking-badges { display: flex; gap: 8px; }
-		.action-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 24px; }
-		.action-card { text-align: center; padding: 24px; }
-		.action-card .btn { width: 100%; margin-top: 12px; }
+		.dashboard-layout {
+			display: grid;
+			grid-template-columns: 1fr 400px;
+			gap: 24px;
+			margin-top: 24px;
+		}
+
+		.gym-image {
+			width: 100%;
+			height: 200px;
+			object-fit: cover;
+			border-radius: 12px;
+			margin-bottom: 16px;
+		}
+
+		.facility-tags {
+			display: flex;
+			gap: 8px;
+			flex-wrap: wrap;
+			margin: 12px 0;
+		}
+
+		.facility-tag {
+			background: var(--accent);
+			color: white;
+			padding: 4px 12px;
+			border-radius: 20px;
+			font-size: 12px;
+			font-weight: 700;
+		}
+
+		.booking-item {
+			padding: 16px 0;
+			border-bottom: 1px solid #eef2f7;
+		}
+
+			.booking-item:last-child {
+				border-bottom: none;
+			}
+
+		.booking-name {
+			font-weight: 600;
+			margin-bottom: 4px;
+		}
+
+		.booking-time {
+			color: var(--muted);
+			font-size: 14px;
+			margin-bottom: 8px;
+		}
+
+		.booking-badges {
+			display: flex;
+			gap: 8px;
+		}
+
+		.action-cards {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 18px;
+			margin-top: 24px;
+		}
+
+		.action-card {
+			text-align: center;
+			padding: 24px;
+		}
+
+			.action-card .btn {
+				width: 100%;
+				margin-top: 12px;
+			}
 	</style>
 </head>
 <body>
@@ -41,33 +107,29 @@
 			<div class="kpis">
 				<div class="kpi">
 					<div>
-						<div style="color: var(--muted); font-size: 14px; margin-bottom: 4px;">Total Bookings</div>
-						<div class="value">156</div>
-						<div style="color: var(--success); font-size: 12px; margin-top: 4px;">↗ +12% this week</div>
+						<div style="color: var(--muted); font-size: 14px;margin-bottom: 4px;">Total Bookings</div>
+						<div class="value">@Model.TotalBookings</div>
+						<div style="color: var(--success); font-size: 12px;">↗ +12% this week</div>
 					</div>
 					<div style="color: var(--primary); font-size: 24px;">📅</div>
 				</div>
+
 				<div class="kpi">
 					<div>
-						<div style="color: var(--muted); font-size: 14px; margin-bottom: 4px;">Total Revenue</div>
-						<div class="value">$8,450</div>
-						<div style="color: var(--success); font-size: 12px; margin-top: 4px;">↗ +8% this month</div>
+						<div style="color: var(--muted); margin-bottom: 4px;">Total Revenue</div>
+						<div class="value">$@Model.TotalRevenue</div>
+						<div style="color: var(--success); font-size: 12px;">↗ +8% this month</div>
 					</div>
 					<div style="color: var(--accent); font-size: 24px;">💰</div>
 				</div>
+
 				<div class="kpi">
 					<div>
-						<div style="color: var(--muted); font-size: 14px; margin-bottom: 4px;">Active Members</div>
-						<div class="value">234</div>
-						<div style="color: var(--success); font-size: 12px; margin-top: 4px;">↗ +5% growth</div>
-					</div>
-					<div style="color: var(--text); font-size: 24px;">👥</div>
-				</div>
-				<div class="kpi">
-					<div>
-						<div style="color: var(--muted); font-size: 14px; margin-bottom: 4px;">Avg Rating</div>
-						<div class="value">4.8</div>
-						<div style="color: var(--muted); font-size: 12px; margin-top: 4px;">Based on 234 reviews</div>
+						<div style="color: var(--muted); margin-bottom: 4px;">Avg Rating</div>
+						<div class="value">@Model.AvgRating.ToString("0.0")</div>
+						<div style="color: var(--muted); font-size: 12px;">
+							Based on @Model.ReviewsCount reviews
+						</div>
 					</div>
 					<div style="color: var(--accent); font-size: 24px;">⭐</div>
 				</div>
@@ -75,79 +137,92 @@
 
 			<div class="dashboard-layout">
 				<div class="card">
-					<img src="../assets/gym1.jpg" alt="PowerFit Gym" class="gym-image" />
+					<img src="@Model.Gym.Media?.FirstOrDefault()?.Url" class="gym-image" />
+
 					<div class="card-body">
-						<h3>PowerFit Gym</h3>
+						<h3>@Model.Gym.Name</h3>
+
 						<div class="info-row" style="margin: 8px 0;">
 							<span>📍</span>
-							<span>123 Main Street, Downtown</span>
+							<span>@Model.Gym.Address</span>
 						</div>
+
 						<div class="info-row" style="margin: 8px 0;">
 							<span>📞</span>
-							<span>+1 (555) 123-4567</span>
+							<span>@Model.Gym.Phone</span>
 						</div>
-						<div class="facility-tags">
-							<span class="facility-tag">Cardio Equipment</span>
-							<span class="facility-tag">Free Weights</span>
-							<span class="facility-tag">Machines</span>
-							<span class="facility-tag">Group Classes</span>
-							<span class="facility-tag">Locker Rooms</span>
-							<span class="facility-tag">Parking</span>
+						<div class="info-row" style="margin: 8px 0;">
+							<span>✉️</span>
+							<span>@Model.Gym.Email</span>
 						</div>
-						<button class="btn btn-ghost" style="width: 100%; margin-top: 16px;">Edit Profile</button>
+						<div class="info-row" style="margin: 8px 0;">
+							<span>🕒</span>
+							<span>@Model.Gym.OpeningHours</span>
+						</div>
+						@* <div class="info-row" style="margin: 8px 0;">
+							<span>⭐</span>
+							<span>@Model.Gym.Reviews</span>
+						</div> *@
+
+						@* <div class="facility-tags">
+							@foreach (var f in Model.)
+							{
+								<span class="facility-tag">@f.Name</span>
+							}
+						</div> *@
+
+						@* <a asp-action="EditProfile" asp-controller="GymOwner" class="btn btn-ghost" style="width:100%; margin-top:16px;">Edit Profile</a> *@
 					</div>
 				</div>
 
 				<div class="card">
 					<div class="card-header">
 						<h3>Recent Bookings</h3>
-						<a href="owner-bookings.html" style="color: var(--primary); text-decoration: none; font-size: 14px;">View All</a>
+						<a asp-action="Bookings" asp-controller="GymOwner" style="color: var(--primary); font-size: 14px;">View All</a>
 					</div>
+
 					<div class="card-body">
-						<div class="booking-item">
-							<div class="booking-name">John Smith</div>
-							<div class="booking-time">📅 Today, 10:00 AM</div>
-							<div class="booking-badges">
-								<span class="badge gray">Day Pass</span>
-								<span class="badge teal">Confirmed</span>
+						@foreach (var b in Model.RecentBookings)
+						{
+							<div class="booking-item">
+								@* <div class="booking-name">@b.User.Email</div> *@
+								<div class="booking-time">📅 @b.StartDate.ToString("MMMM dd, hh:mm tt")</div>
+
+								<div class="booking-badges">
+									<span class="badge gray">@b.Type</span>
+
+									@if (b.IsConfirmedByOwner)
+									{
+										<span class="badge teal">Confirmed</span>
+									}
+									else
+									{
+										<span class="badge orange">Pending</span>
+									}
+								</div>
 							</div>
-						</div>
-						<div class="booking-item">
-							<div class="booking-name">Sarah Johnson</div>
-							<div class="booking-time">📅 Today, 2:00 PM</div>
-							<div class="booking-badges">
-								<span class="badge gray">Personal Training</span>
-								<span class="badge orange">Pending</span>
-							</div>
-						</div>
-						<div class="booking-item">
-							<div class="booking-name">Mike Davis</div>
-							<div class="booking-time">📅 Tomorrow, 9:00 AM</div>
-							<div class="booking-badges">
-								<span class="badge gray">Group Class</span>
-								<span class="badge teal">Confirmed</span>
-							</div>
-						</div>
+						}
 					</div>
 				</div>
 			</div>
 
-			<div class="action-cards gap-5">
+			<div class="action-cards">
 				<div class="card action-card">
 					<h3>Manage Media</h3>
 					<p style="color: var(--muted); margin: 8px 0;">Upload and manage photos & videos</p>
-					<a asp-controller="gymowner" asp-action="media" class="btn btn-primary">Manage Media</a>
+					<a asp-action="Media" asp-controller="GymOwner" class="btn btn-primary">Manage Media</a>
 				</div>
+
 				<div class="card action-card">
 					<h3>View Bookings</h3>
 					<p style="color: var(--muted); margin: 8px 0;">Manage session bookings</p>
-					<a asp-controller="gymowner" asp-action="bookings" class="btn btn-accent">View Bookings</a>
+					<a asp-action="Bookings" asp-controller="GymOwner" class="btn btn-accent">View Bookings</a>
 				</div>
 			</div>
+
 		</div>
 	</section>
 
-	<script src="../js/main.js"></script>
+	<script src="~/js/main.js"></script>
 </body>
 </html>
-

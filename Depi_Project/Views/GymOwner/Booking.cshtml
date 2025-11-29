@@ -1,0 +1,195 @@
+﻿@* @model *@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Booking Management • FitConnect</title>
+	<link rel="stylesheet" href="../css/style.css" />
+	<style>
+		.booking-filters { display: flex; gap: 12px; margin: 20px 0; }
+		.filter-tab { padding: 8px 16px; border-radius: 20px; background: #f2f6fa; color: var(--muted); cursor: pointer; transition: .2s; }
+		.filter-tab.active { background: white; color: var(--text); box-shadow: var(--shadow); }
+		.search-bar { display: flex; gap: 12px; margin: 20px 0; }
+		.search-input { flex: 1; }
+		.booking-table { overflow-x: auto; }
+		.table-actions { display: flex; gap: 8px; }
+		.action-btn { padding: 6px 12px; border-radius: 6px; border: none; cursor: pointer; font-size: 12px; font-weight: 600; }
+		.action-btn.approve { background: var(--primary); color: white; }
+		.action-btn.cancel { background: var(--danger); color: white; }
+		.action-btn.view { background: var(--muted); color: white; }
+	</style>
+</head>
+<body>
+	<header class="header">
+		<div class="container navbar">
+			<div class="brand"><div class="logo">🏋️</div> FitConnect</div>
+			<nav class="navlinks">
+				<a asp-controller="gymowner" asp-action="dashboard" style="color: var(--text);">Dashboard</a>
+				<a asp-controller="gymowner" asp-action="media">Media</a>
+				<a asp-controller="gymowner" asp-action="booking">Bookings</a>
+				<a asp-controller="home" asp-action="index">Logout</a>
+			</nav>
+		</div>
+	</header>
+
+	<section class="section">
+		<div class="container">
+			<h1 class="section-title">Booking Management</h1>
+			<p class="section-sub">View and manage all gym bookings</p>
+
+			<div class="kpis">
+				<div class="kpi">
+					<div>
+						<div style="color: var(--muted); font-size: 14px; margin-bottom: 4px;">Total Bookings</div>
+						<div class="value">5</div>
+					</div>
+					<div style="color: var(--primary); font-size: 24px;">📅</div>
+				</div>
+				<div class="kpi">
+					<div>
+						<div style="color: var(--muted); font-size: 14px; margin-bottom: 4px;">Pending</div>
+						<div class="value">2</div>
+					</div>
+					<div style="color: var(--accent); font-size: 24px;">⏰</div>
+				</div>
+				<div class="kpi">
+					<div>
+						<div style="color: var(--muted); font-size: 14px; margin-bottom: 4px;">Confirmed</div>
+						<div class="value">2</div>
+					</div>
+					<div style="color: var(--success); font-size: 24px;">✅</div>
+				</div>
+				<div class="kpi">
+					<div>
+						<div style="color: var(--muted); font-size: 14px; margin-bottom: 4px;">Cancelled</div>
+						<div class="value">1</div>
+					</div>
+					<div style="color: var(--danger); font-size: 24px;">❌</div>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-header">
+					<h3>All Bookings</h3>
+					<div class="search-bar">
+						<div class="search-input">
+							<input class="input" placeholder="Search by name or email.." style="padding-left: 40px;" />
+							<span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted);">🔍</span>
+						</div>
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="booking-filters">
+						<div class="filter-tab active">All</div>
+						<div class="filter-tab">Pending</div>
+						<div class="filter-tab">Confirmed</div>
+						<div class="filter-tab">Cancelled</div>
+					</div>
+
+					<div class="booking-table">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>User</th>
+									<th>Type</th>
+									<th>Date & Time</th>
+									<th>Amount</th>
+									<th>Status</th>
+									<th>Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										<div>
+											<div style="font-weight: 600;">John Smith</div>
+											<div style="color: var(--muted); font-size: 14px;">john@example.com</div>
+										</div>
+									</td>
+									<td>Day Pass</td>
+									<td>
+										<div>2024-03-20</div>
+										<div style="color: var(--muted); font-size: 14px;">10:00 AM</div>
+									</td>
+									<td>$15</td>
+									<td><span class="badge orange">Pending</span></td>
+									<td>
+										<div class="table-actions">
+											<button class="action-btn approve">✓ Approve</button>
+											<button class="action-btn cancel">✕ Cancel</button>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div>
+											<div style="font-weight: 600;">Sarah Johnson</div>
+											<div style="color: var(--muted); font-size: 14px;">sarah@example.com</div>
+										</div>
+									</td>
+									<td>Personal Training</td>
+									<td>
+										<div>2024-03-20</div>
+										<div style="color: var(--muted); font-size: 14px;">2:00 PM</div>
+									</td>
+									<td>$60</td>
+									<td><span class="badge teal">Confirmed</span></td>
+									<td>
+										<div class="table-actions">
+											<button class="action-btn cancel">✕ Cancel</button>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div>
+											<div style="font-weight: 600;">Mike Davis</div>
+											<div style="color: var(--muted); font-size: 14px;">mike@example.com</div>
+										</div>
+									</td>
+									<td>Group Class</td>
+									<td>
+										<div>2024-03-21</div>
+										<div style="color: var(--muted); font-size: 14px;">9:00 AM</div>
+									</td>
+									<td>$25</td>
+									<td><span class="badge teal">Confirmed</span></td>
+									<td>
+										<div class="table-actions">
+											<button class="action-btn cancel">✕ Cancel</button>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script src="../js/main.js"></script>
+	<script>
+		// Filter tabs
+		document.querySelectorAll('.filter-tab').forEach(tab => {
+			tab.addEventListener('click', () => {
+				document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+				tab.classList.add('active');
+			});
+		});
+
+		// Action buttons
+		document.querySelectorAll('.action-btn').forEach(btn => {
+			btn.addEventListener('click', (e) => {
+				e.preventDefault();
+				const action = btn.classList.contains('approve') ? 'approved' : 
+							  btn.classList.contains('cancel') ? 'cancelled' : 'viewed';
+				alert(`Booking ${action}!`);
+			});
+		});
+	</script>
+</body>
+</html>
+

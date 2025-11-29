@@ -1,99 +1,76 @@
-﻿<!doctype html>
-<html lang="en">
-<head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title>Media Management • FitConnect</title>
-	<link rel="stylesheet" href="../css/style.css" />
-	<style>
-		.upload-zone { border: 2px dashed #e5edf5; border-radius: 12px; padding: 40px; text-align: center; margin: 20px 0; cursor: pointer; transition: .2s; }
-		.upload-zone:hover { border-color: var(--primary); background: rgba(16,196,207,.02); }
-		.upload-icon { font-size: 48px; color: var(--muted); margin-bottom: 16px; }
-		.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 24px; }
-		.stat-card { text-align: center; padding: 20px; }
-		.stat-value { font-size: 32px; font-weight: 800; margin: 8px 0; }
-		.stat-label { color: var(--muted); font-size: 14px; }
-		.media-icon { width: 40px; height: 40px; border-radius: 8px; display: grid; place-items: center; color: white; font-size: 18px; }
-		.media-icon.photos { background: var(--primary); }
-		.media-icon.videos { background: var(--accent); }
-		.media-icon.storage { background: var(--text); }
-	</style>
-</head>
-<body>
-	<header class="header">
-		<div class="container navbar">
-			<div class="brand"><div class="logo">🏋️</div> FitConnect</div>
-			<nav class="navlinks">
-				<a asp-controller="gymowner" asp-action="dashboard" style="color: var(--text);">Dashboard</a>
-				<a asp-controller="gymowner" asp-action="media">Media</a>
-				<a asp-controller="gymowner" asp-action="bookings">Bookings</a>
-				<a asp-controller="home" asp-action="index">Logout</a>
-			</nav>
-		</div>
-	</header>
+﻿@model Depi_Project.Models.Gym
 
-	<section class="section">
-		<div class="container">
-			<h1 class="section-title">Media Management</h1>
-			<p class="section-sub">Upload and manage your gym's photos and videos</p>
+<header class="header">
+    <div class="container navbar">
+        <div class="brand"><div class="logo">🏋️</div> FitConnect</div>
+        <nav class="navlinks">
+            <a asp-controller="gymowner" asp-action="dashboard" style="color: var(--text);">Dashboard</a>
+            <a asp-controller="gymowner" asp-action="media">Media</a>
+            <a asp-controller="gymowner" asp-action="bookings">Bookings</a>
+            <a asp-controller="home" asp-action="index">Logout</a>
+        </nav>
+    </div>
+</header>
 
-			<div class="card">
-				<div class="card-header">
-					<span>📤</span>
-					<h3>Upload New Media</h3>
-				</div>
-				<div class="card-body">
-					<div class="upload-zone">
-						<div class="upload-icon">📤</div>
-						<h4>Drag & drop files here</h4>
-						<p style="color: var(--muted); margin: 8px 0;">or click to browse (Max file size: 10MB)</p>
-						<button class="btn btn-primary" style="margin-top: 16px;">Select Files</button>
-					</div>
-				</div>
-			</div>
+<section class="section">
+    <div class="container">
 
-			<div class="stats-grid">
-				<div class="card stat-card">
-					<div class="media-icon photos">📷</div>
-					<div class="stat-value">24</div>
-					<div class="stat-label">Total Photos</div>
-				</div>
-				<div class="card stat-card">
-					<div class="media-icon videos">🎥</div>
-					<div class="stat-value">6</div>
-					<div class="stat-label">Total Videos</div>
-				</div>
-				<div class="card stat-card">
-					<div class="media-icon storage">💾</div>
-					<div class="stat-value">2.4 GB</div>
-					<div class="stat-label">Storage Used</div>
-					<div class="badge orange" style="margin-top: 8px;">40% used</div>
-				</div>
-			</div>
-		</div>
-	</section>
+        <h1 class="section-title">Media Management</h1>
+        <p class="section-sub">Upload and manage your gym's photos & videos</p>
 
-	<script src="../js/main.js"></script>
-	<script>
-		// Upload zone interaction
-		document.querySelector('.upload-zone').addEventListener('click', () => {
-			document.querySelector('input[type="file"]')?.click();
-		});
+        <div class="card">
+            <div class="card-header">
+                <h3>Upload New Media</h3>
+            </div>
 
-		// Create hidden file input
-		const fileInput = document.createElement('input');
-		fileInput.type = 'file';
-		fileInput.multiple = true;
-		fileInput.accept = 'image/*,video/*';
-		fileInput.style.display = 'none';
-		document.body.appendChild(fileInput);
+            <div class="card-body">
+                <form asp-action="UploadMedia" asp-controller="GymOwner" enctype="multipart/form-data">
+                    <input type="hidden" name="gymId" value="@Model.Id" />
 
-		fileInput.addEventListener('change', (e) => {
-			if (e.target.files.length > 0) {
-				alert(`Selected ${e.target.files.length} file(s)`);
-			}
-		});
-	</script>
-</body>
-</html>
+                    <div class="mb-3">
+                        <label>Select File</label>
+                        <input type="file" name="file" class="form-control" required />
+                    </div>
 
+                    <div class="mb-3">
+                        <label>Media Type</label>
+                        <select name="type" class="form-control">
+                            <option value="photo">Photo</option>
+                            <option value="video">Video</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+            </div>
+        </div>
+
+        <h2 style="margin-top: 30px;">Current Media</h2>
+
+        <div class="row mt-3">
+            @foreach (var m in Model.Media)
+            {
+                <div class="col-3 mb-4">
+                    <div class="card">
+                        @if (m.Type == "photo")
+                        {
+                            <img src="@m.Url" class="img-fluid" style="height:180px; object-fit:cover;" />
+                        }
+                        else
+                        {
+                            <video src="@m.Url" controls style="width:100%; height:180px; object-fit:cover;"></video>
+                        }
+
+                        <div class="card-body text-center">
+                            <form asp-action="DeleteMedia" method="post">
+                                <input type="hidden" name="id" value="@m.Id" />
+                                <button class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+</section>

@@ -34,7 +34,7 @@ namespace Depi_Project.Controllers
 
 			if (gym == null) return NotFound();
 
-			// 2) Build session options dynamically (NO FAKE DATA)
+			// 2) Build session options dynamically 
 			var sessionOptions = new List<GymSessionOption>();
 
 			if (gym.PricePerDay.HasValue)
